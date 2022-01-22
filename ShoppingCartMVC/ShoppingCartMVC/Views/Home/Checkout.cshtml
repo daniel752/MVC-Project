@@ -1,0 +1,98 @@
+﻿@model IEnumerable<ShoppingCartMVC.Models.getAllTableSits>
+
+@*showing cart item with conditions*@
+
+<div class="container">
+    @if (TempData["total"] == null)
+    {
+        <h1>cart is empty</h1>
+        <a href="@Url.Action("Index","Home")">go back</a>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+                <div class="cart-list">
+                    <h3>Number Of Items: @TempData["item_count"]</h3>
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr style="background-color:red;" class="text-center">
+                                <th></th>
+                                @*<th>ID</th>*@
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in TempData["cart"] as List<ShoppingCartMVC.Models.Cart>)
+                            {
+                                <tr class="text-center">
+                                    <td class="product-remove"><a href="@Url.Action("remove", "Home", new { id = item.proid })"><span class="ion-ios-close"></span></a></td>
+                                    @*<td class="product-name">
+                                        <h3>@item.proid</h3>
+                                    </td>*@
+                                    <td class="product-name">
+                                        <h3>@item.proname</h3>
+
+                                    </td>
+                                    <td class="price">@item.price</td>
+
+                                    <td class="quantity">
+                                        @item.qty
+                                    </td>
+                                    <td class="total">$ @item.bill</td>
+                                </tr><!-- END TR-->
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    <a style="background-color:red; margin-top:20px" href="@Url.Action("Index","Sit")" class="btn btn-info py-3 px">Available Sits</a>
+
+    @*show checkout button as per user rights*@
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <a style="background-color:red;" href="@Url.Action("Login","Account")" class="btn btn-primary py-3 px-4">Login</a>
+        <a style="background-color:red;" href="@Url.Action("Register","Account")" class="btn btn-primary py-3 px-4">Register</a>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("3"))
+        {
+
+            if (TempData["cart"] != null)
+            {
+                using (Html.BeginForm())
+                {
+                    <div style="margin-top:15px" class="cart-total col-lg-6">
+                        <h3>Cart Total</h3>
+                        <hr>
+                        <p class="d-flex total-price">
+                            <span>Total</span>
+                            <span>$ @TempData["total"]</span>
+                        </p>
+                    </div>
+                    <span>Order Name:</span>
+                    <input type="text" name="customerName" class="form-control col-lg-4" />
+                    <br />
+                    <input style="background-color:red" type="submit" value="Checkout" class="btn btn-success py-3 px-4" />
+                }
+            }
+        }
+    }
+</div>
+<style>
+    div {
+        max-width: 100%;
+        max-height: 100%;
+        margin:auto;
+        display:grid;
+    }
+</style>
+

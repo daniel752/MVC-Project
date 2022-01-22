@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ShoppingCartMVC.Models.tblTable>
+
+<script src="~/js/jquery.min.js"></script>
+
+<div class="container">
+    <h4>View Tables</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Table Number</th>
+                <th>Number Of Sits</th>
+                <th>Area</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.tableId</td>
+                    <td>@item.numSits</td>
+                    <td>@item.area</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Table", new { id = item.tableId})" class="btn btn-info">Edit Table</a>
+                        <a href="@Url.Action("Delete", "Table", new { id = item.tableId})" class="btn btn-danger">Delete Table</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

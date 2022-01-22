@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ShoppingCartMVC.Models.getallorders>
+
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.user)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceDate)
+            </th>
+
+            <th>Action</th>
+            <th></th>
+        </tr>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.user)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvoiceDate)
+                </td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <span class="btn btn-success">Approve</span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("ConfirmOrder","Home", new { InvoiceId = item.InvoiceId, userId = item.UserId})" class="btn btn-info">Pending</a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

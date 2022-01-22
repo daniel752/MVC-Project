@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbOnlineStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblCategories">
+    <Key>
+      <PropertyRef Name="CatId" />
+    </Key>
+    <Property Name="CatId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblInvoice">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+    </Key>
+    <Property Name="InvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="Bill" Type="int" />
+    <Property Name="Payment" Type="varchar" MaxLength="50" />
+    <Property Name="InvoiceDate" Type="date" />
+    <Property Name="Status" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="tblOrder">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProID" Type="int" />
+    <Property Name="Contact" Type="varchar" MaxLength="50" />
+    <Property Name="Address" Type="varchar" MaxLength="100" />
+    <Property Name="Unit" Type="int" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="Total" Type="int" />
+    <Property Name="OrderDate" Type="date" />
+    <Property Name="InvoiceId" Type="int" />
+  </EntityType>
+  <EntityType Name="tblProducts">
+    <Key>
+      <PropertyRef Name="ProID" />
+    </Key>
+    <Property Name="ProID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+    <Property Name="Unit" Type="int" />
+    <Property Name="Image" Type="varchar" MaxLength="1000" />
+    <Property Name="CatId" Type="int" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="RoleType" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'E:\SHOPPINGCARTMVC\SHOPPINGCARTMVC\APP_DATA\DBONLINESTORE.MDF.dbo.getallorders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="getallorders">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="InvoiceId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="user" Type="varchar" MaxLength="50" />
+    <Property Name="Bill" Type="int" />
+    <Property Name="Payment" Type="varchar" MaxLength="50" />
+    <Property Name="InvoiceDate" Type="date" />
+    <Property Name="Status" Type="tinyint" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'E:\SHOPPINGCARTMVC\SHOPPINGCARTMVC\APP_DATA\DBONLINESTORE.MDF.dbo.getallorderusers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="getallorderusers">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="InvoiceId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="user" Type="varchar" MaxLength="50" />
+    <Property Name="Bill" Type="int" />
+    <Property Name="Payment" Type="varchar" MaxLength="50" />
+    <Property Name="InvoiceDate" Type="date" />
+    <Property Name="Status" Type="tinyint" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'E:\SHOPPINGCARTMVC\SHOPPINGCARTMVC\APP_DATA\DBONLINESTORE.MDF.dbo.user_invoices' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="user_invoices">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+    </Key>
+    <Property Name="InvoiceId" Type="int" Nullable="false" />
+    <Property Name="Customer" Type="varchar" MaxLength="50" />
+    <Property Name="Bill" Type="int" />
+    <Property Name="Payment" Type="varchar" MaxLength="50" />
+    <Property Name="InvoiceDate" Type="date" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'E:\SHOPPINGCARTMVC\SHOPPINGCARTMVC\APP_DATA\DBONLINESTORE.MDF.dbo.vw_getallproducts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vw_getallproducts">
+    <Key>
+      <PropertyRef Name="ProID" />
+    </Key>
+    <Property Name="ProID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Category" Type="varchar" MaxLength="50" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+    <Property Name="Unit" Type="int" />
+    <Property Name="Image" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <Association Name="FK__tblInvoic__UserI__2A4B4B5E">
+    <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+    <End Role="tblInvoice" Type="Self.tblInvoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="tblInvoice">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblOrder__Invoic__2D27B809">
+    <End Role="tblInvoice" Type="Self.tblInvoice" Multiplicity="0..1" />
+    <End Role="tblOrder" Type="Self.tblOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblInvoice">
+        <PropertyRef Name="InvoiceId" />
+      </Principal>
+      <Dependent Role="tblOrder">
+        <PropertyRef Name="InvoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOrder_tblProducts">
+    <End Role="tblProducts" Type="Self.tblProducts" Multiplicity="0..1" />
+    <End Role="tblOrder" Type="Self.tblOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProducts">
+        <PropertyRef Name="ProID" />
+      </Principal>
+      <Dependent Role="tblOrder">
+        <PropertyRef Name="ProID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProducts_tblCategories">
+    <End Role="tblCategories" Type="Self.tblCategories" Multiplicity="0..1" />
+    <End Role="tblProducts" Type="Self.tblProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCategories">
+        <PropertyRef Name="CatId" />
+      </Principal>
+      <Dependent Role="tblProducts">
+        <PropertyRef Name="CatId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbOnlineStoreModelStoreContainer">
+    <EntitySet Name="tblCategories" EntityType="Self.tblCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInvoice" EntityType="Self.tblInvoice" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOrder" EntityType="Self.tblOrder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProducts" EntityType="Self.tblProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="getallorders" EntityType="Self.getallorders" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[getallorders].[InvoiceId] AS [InvoiceId], 
+[getallorders].[UserId] AS [UserId], 
+[getallorders].[user] AS [user], 
+[getallorders].[Bill] AS [Bill], 
+[getallorders].[Payment] AS [Payment], 
+[getallorders].[InvoiceDate] AS [InvoiceDate], 
+[getallorders].[Status] AS [Status]
+FROM [dbo].[getallorders] AS [getallorders]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="getallorderusers" EntityType="Self.getallorderusers" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[getallorderusers].[InvoiceId] AS [InvoiceId], 
+[getallorderusers].[UserId] AS [UserId], 
+[getallorderusers].[user] AS [user], 
+[getallorderusers].[Bill] AS [Bill], 
+[getallorderusers].[Payment] AS [Payment], 
+[getallorderusers].[InvoiceDate] AS [InvoiceDate], 
+[getallorderusers].[Status] AS [Status]
+FROM [dbo].[getallorderusers] AS [getallorderusers]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="user_invoices" EntityType="Self.user_invoices" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[user_invoices].[InvoiceId] AS [InvoiceId], 
+[user_invoices].[Customer] AS [Customer], 
+[user_invoices].[Bill] AS [Bill], 
+[user_invoices].[Payment] AS [Payment], 
+[user_invoices].[InvoiceDate] AS [InvoiceDate]
+FROM [dbo].[user_invoices] AS [user_invoices]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vw_getallproducts" EntityType="Self.vw_getallproducts" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[vw_getallproducts].[ProID] AS [ProID], 
+[vw_getallproducts].[Name] AS [Name], 
+[vw_getallproducts].[Category] AS [Category], 
+[vw_getallproducts].[Description] AS [Description], 
+[vw_getallproducts].[Unit] AS [Unit], 
+[vw_getallproducts].[Image] AS [Image]
+FROM [dbo].[vw_getallproducts] AS [vw_getallproducts]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__tblInvoic__UserI__2A4B4B5E" Association="Self.FK__tblInvoic__UserI__2A4B4B5E">
+      <End Role="tblUser" EntitySet="tblUser" />
+      <End Role="tblInvoice" EntitySet="tblInvoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblOrder__Invoic__2D27B809" Association="Self.FK__tblOrder__Invoic__2D27B809">
+      <End Role="tblInvoice" EntitySet="tblInvoice" />
+      <End Role="tblOrder" EntitySet="tblOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOrder_tblProducts" Association="Self.FK_tblOrder_tblProducts">
+      <End Role="tblProducts" EntitySet="tblProducts" />
+      <End Role="tblOrder" EntitySet="tblOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProducts_tblCategories" Association="Self.FK_tblProducts_tblCategories">
+      <End Role="tblCategories" EntitySet="tblCategories" />
+      <End Role="tblProducts" EntitySet="tblProducts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

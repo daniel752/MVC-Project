@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ShoppingCartMVC.Models.getAllTableSits>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/js/jquery.min.js"></script>
+
+<div class="container">
+    <h4>View Sits</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Table Number</th>
+                <th>Sit Number</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.tableId</td>
+                <td>@item.SitId</td>
+                <td>
+                    <a href="@Url.Action("Delete", "Sit", new { id = item.SitId})" class="btn btn-danger">Delete Sit</a>
+                </td>
+                @if (item.available == 1)
+                {
+                    @*<td style="background-color:limegreen;">Available :)</td>*@
+                    if ((int)Session["userRole"] == 3)
+                    {
+                        <td>
+                            <a href="@Url.Action("SaveSit", "Sit", new { SitId = item.SitId,userId = Session["uid"]})" class="btn btn-info">Save Sit</a>
+                        </td>
+                    }
+                }
+                else
+                {
+                    if ((int)Session["userRole"] == 3)
+                    {
+                        <td>
+                            <span class="btn btn-outline-warning">Taken :(</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a href="@Url.Action("ReleaseSit", "Sit", new { SitId = item.SitId})" class="btn btn-info">Release Sit</a>
+                        </td>
+                    }
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

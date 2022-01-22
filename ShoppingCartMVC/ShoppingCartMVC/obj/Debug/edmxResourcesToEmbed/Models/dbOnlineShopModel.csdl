@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbOnlineShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="dbOnlineShopEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblCategories" EntityType="dbOnlineShopModel.tblCategory" />
+    <EntitySet Name="tblInvoices" EntityType="dbOnlineShopModel.tblInvoice" />
+    <EntitySet Name="tblOrders" EntityType="dbOnlineShopModel.tblOrder" />
+    <EntitySet Name="tblProducts" EntityType="dbOnlineShopModel.tblProduct" />
+    <EntitySet Name="tblUsers" EntityType="dbOnlineShopModel.tblUser" />
+    <EntitySet Name="getallorders" EntityType="dbOnlineShopModel.getallorder" />
+    <EntitySet Name="getallorderusers" EntityType="dbOnlineShopModel.getallorderuser" />
+    <EntitySet Name="user_invoices" EntityType="dbOnlineShopModel.user_invoices" />
+    <EntitySet Name="vw_getallproducts" EntityType="dbOnlineShopModel.vw_getallproducts" />
+    <AssociationSet Name="FK_tblProducts_tblCategories" Association="dbOnlineShopModel.FK_tblProducts_tblCategories">
+      <End Role="tblCategory" EntitySet="tblCategories" />
+      <End Role="tblProduct" EntitySet="tblProducts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblInvoic__UserI__5FB337D6" Association="dbOnlineShopModel.FK__tblInvoic__UserI__5FB337D6">
+      <End Role="tblUser" EntitySet="tblUsers" />
+      <End Role="tblInvoice" EntitySet="tblInvoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblOrder__Invoic__628FA481" Association="dbOnlineShopModel.FK__tblOrder__Invoic__628FA481">
+      <End Role="tblInvoice" EntitySet="tblInvoices" />
+      <End Role="tblOrder" EntitySet="tblOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOrder_tblProducts" Association="dbOnlineShopModel.FK_tblOrder_tblProducts">
+      <End Role="tblProduct" EntitySet="tblProducts" />
+      <End Role="tblOrder" EntitySet="tblOrders" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tblCategory">
+    <Key>
+      <PropertyRef Name="CatId" />
+    </Key>
+    <Property Name="CatId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblProducts" Relationship="dbOnlineShopModel.FK_tblProducts_tblCategories" FromRole="tblCategory" ToRole="tblProduct" />
+  </EntityType>
+  <EntityType Name="tblInvoice">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+    </Key>
+    <Property Name="InvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="Bill" Type="Int32" />
+    <Property Name="Payment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+    <Property Name="Status" Type="Byte" />
+    <NavigationProperty Name="tblUser" Relationship="dbOnlineShopModel.FK__tblInvoic__UserI__5FB337D6" FromRole="tblInvoice" ToRole="tblUser" />
+    <NavigationProperty Name="tblOrders" Relationship="dbOnlineShopModel.FK__tblOrder__Invoic__628FA481" FromRole="tblInvoice" ToRole="tblOrder" />
+  </EntityType>
+  <EntityType Name="tblOrder">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProID" Type="Int32" />
+    <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Unit" Type="Int32" />
+    <Property Name="Qty" Type="Int32" />
+    <Property Name="Total" Type="Int32" />
+    <Property Name="OrderDate" Type="DateTime" Precision="0" />
+    <Property Name="InvoiceId" Type="Int32" />
+    <NavigationProperty Name="tblInvoice" Relationship="dbOnlineShopModel.FK__tblOrder__Invoic__628FA481" FromRole="tblOrder" ToRole="tblInvoice" />
+    <NavigationProperty Name="tblProduct" Relationship="dbOnlineShopModel.FK_tblOrder_tblProducts" FromRole="tblOrder" ToRole="tblProduct" />
+  </EntityType>
+  <EntityType Name="tblProduct">
+    <Key>
+      <PropertyRef Name="ProID" />
+    </Key>
+    <Property Name="ProID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Unit" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CatId" Type="Int32" />
+    <NavigationProperty Name="tblCategory" Relationship="dbOnlineShopModel.FK_tblProducts_tblCategories" FromRole="tblProduct" ToRole="tblCategory" />
+    <NavigationProperty Name="tblOrders" Relationship="dbOnlineShopModel.FK_tblOrder_tblProducts" FromRole="tblProduct" ToRole="tblOrder" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RoleType" Type="Int32" />
+    <NavigationProperty Name="tblInvoices" Relationship="dbOnlineShopModel.FK__tblInvoic__UserI__5FB337D6" FromRole="tblUser" ToRole="tblInvoice" />
+  </EntityType>
+  <EntityType Name="getallorder">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="user" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Bill" Type="Int32" />
+    <Property Name="Payment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+    <Property Name="Status" Type="Byte" />
+  </EntityType>
+  <EntityType Name="getallorderuser">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="user" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Bill" Type="Int32" />
+    <Property Name="Payment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+    <Property Name="Status" Type="Byte" />
+  </EntityType>
+  <EntityType Name="user_invoices">
+    <Key>
+      <PropertyRef Name="InvoiceId" />
+    </Key>
+    <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+    <Property Name="Customer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Bill" Type="Int32" />
+    <Property Name="Payment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="vw_getallproducts">
+    <Key>
+      <PropertyRef Name="ProID" />
+    </Key>
+    <Property Name="ProID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Unit" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_tblProducts_tblCategories">
+    <End Type="dbOnlineShopModel.tblCategory" Role="tblCategory" Multiplicity="0..1" />
+    <End Type="dbOnlineShopModel.tblProduct" Role="tblProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCategory">
+        <PropertyRef Name="CatId" />
+      </Principal>
+      <Dependent Role="tblProduct">
+        <PropertyRef Name="CatId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblInvoic__UserI__5FB337D6">
+    <End Type="dbOnlineShopModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+    <End Type="dbOnlineShopModel.tblInvoice" Role="tblInvoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="tblInvoice">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblOrder__Invoic__628FA481">
+    <End Type="dbOnlineShopModel.tblInvoice" Role="tblInvoice" Multiplicity="0..1" />
+    <End Type="dbOnlineShopModel.tblOrder" Role="tblOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblInvoice">
+        <PropertyRef Name="InvoiceId" />
+      </Principal>
+      <Dependent Role="tblOrder">
+        <PropertyRef Name="InvoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOrder_tblProducts">
+    <End Type="dbOnlineShopModel.tblProduct" Role="tblProduct" Multiplicity="0..1" />
+    <End Type="dbOnlineShopModel.tblOrder" Role="tblOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProduct">
+        <PropertyRef Name="ProID" />
+      </Principal>
+      <Dependent Role="tblOrder">
+        <PropertyRef Name="ProID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

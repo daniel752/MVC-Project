@@ -1,0 +1,37 @@
+﻿@model ShoppingCartMVC.Models.tblTable
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <h4 style="margin-left:20px">Update Table</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.tableId)
+        <div class="form-group">
+            <div class="col-md-3">
+                Table Area:
+                @Html.EditorFor(model => model.area, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style="background-color:red;" type="submit" value="Update" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+    <p>@TempData["msg"]</p>
+    <div style="margin-left:20px">
+        @Html.ActionLink("Show Available Sits", "Index", "Sit")
+    </div>
+    <div style="margin-left:20px">
+        @Html.ActionLink("Add Sits", "Create", "Sit")
+    </div>
+    <div style="margin-left:20px">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
