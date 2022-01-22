@@ -1,0 +1,104 @@
+Create Database dbOnlineShop
+use dbOnlineShop
+
+CREATE TABLE [dbo].[Users] (
+    [UserId]   INT          IDENTITY (1, 1) NOT NULL,
+    [Name]     VARCHAR (50) NULL,
+    [Email]    VARCHAR (50) NULL,
+    [Password] VARCHAR (50) NULL,
+    [RoleType] INT          NULL,
+    PRIMARY KEY CLUSTERED ([UserId] ASC)
+);
+
+CREATE TABLE [dbo].[Categories] (
+    [CatId] INT          IDENTITY (1, 1) NOT NULL,
+    [Name]  VARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([CatId] ASC)
+);
+
+CREATE TABLE [dbo].[Products] (
+    [ProID]       INT            IDENTITY (1, 1) NOT NULL,
+    [Name]        VARCHAR (50)   NULL,
+    [Description] VARCHAR (50)   NULL,
+    [Unit]        INT            NULL,
+    [Image]       VARCHAR (1000) NULL,
+    [CatId]       INT            NULL,
+    PRIMARY KEY CLUSTERED ([ProID] ASC),
+    CONSTRAINT [FK_tblProducts_tblCategories] FOREIGN KEY ([CatId]) REFERENCES [dbo].[Categories] ([CatId])
+);
+
+CREATE TABLE [dbo].[Orders] (
+    [OrderId]   INT           IDENTITY (1, 1) NOT NULL,
+    [ProID]     INT           NULL,
+    [Contact]   VARCHAR (50)  NULL,
+    [Unit]      INT           NULL,
+    [Qty]       INT           NULL,
+    [Total]     INT           NULL,
+    [OrderDate] DATETIME      NULL,
+    [InvoiceId] INT           NULL,
+    PRIMARY KEY ([OrderId] ASC),
+    FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[Invoices] ([InvoiceId]),
+    CONSTRAINT [FK_tblOrder_tblProducts] FOREIGN KEY ([ProID]) REFERENCES [dbo].[Products] ([ProID])
+);
+
+CREATE TABLE [dbo].[Invoices] (
+    [InvoiceId]   INT          IDENTITY (1, 1) NOT NULL,
+    [UserId]      INT          NULL,
+    [Bill]        INT          NULL,
+    [Payment]     VARCHAR (50) NULL,
+    [InvoiceDate] DATETIME         NULL,
+    [Status]    tinyint        NULL,
+    PRIMARY KEY ([InvoiceId] ASC),
+    FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([UserId])
+);
+
+CREATE TABLE dbo.tblTable
+(
+	tableId	int	identity(1,1) not null,
+	numSeats int null,
+	area	varchar(50) null,
+	primary key(tableId)
+);
+
+CREATE TABLE dbo.tblSit
+(
+	sitId	int identity(1,1) not null,
+	available tinyint	not null,
+	tableId int not null,
+	primary key(sitId),
+	FOREIGN key(tableId) REFERENCES dbo.tblTable(tableId)
+);
+
+create view user_invoices as
+select Invoices.InvoiceId,  Users.Name as 'Customer', 
+ Invoices.Bill,Invoices.Payment, Invoices.InvoiceDate
+ from Invoices
+inner join Users on Users.UserId = Invoices.UserId
+where Invoices.UserId = Users.UserId
+
+create view vw_getallproducts as
+select Products.ProID, Products.Name, Categories.Name as 'Category', Products.Description, Products.Unit, Products.Image
+from Products
+inner join Categories on Categories.CatId = Products.CatId
+
+create view getallorders as 
+select Invoices.InvoiceId,Users.UserId, Users.Name as 'user', Invoices.Bill,Invoices.Payment
+, Invoices.InvoiceDate,Invoices.Status  from Invoices
+inner join Users on Users.UserId = Invoices.UserId
+
+create view getallorderusers as
+select Invoices.InvoiceId,Users.UserId, Users.Name as 'user', Invoices.Bill,Invoices.Payment
+, Invoices.InvoiceDate,Invoices.Status  from Invoices
+inner join Users on Users.UserId = Invoices.UserId
+where Invoices.Status = 1
+
+create view getAllTableSits AS
+select tblSit.SitId,tblSit.tableId,tblSit.available
+from tblSit
+inner join tblTable on tblTable.tableId = tblSit.tableId
+
+create view getTableAvailableSits AS
+select tblSit.SitId,tblSit.tableId,tblSit.available
+from tblSit
+inner join tblTable on tblTable.tableId = tblSit.tableId
+where tblSit.available = 1
